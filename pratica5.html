@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Trabalho Prático - 4</title>
+    <meta charset="UTF-8">
+    <style>
+        video {
+            width: 640px;
+            height: 360px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <video id="videoPlayer" controls></video>
+    </div>
+    <script src="js/dash.all.min.js"></script>
+    <script src="js/LowestBitrateRule2.js"></script>
+    <script>
+        (function () {
+            var url = "http://rdmedia.bbc.co.uk/dash/ondemand/elephants_dream/1/client_manifest-all.mpd";
+            var player = dashjs.MediaPlayer().create();
+            
+            player.updateSettings({
+                'streaming': {
+                    'abr': {
+                        'useDefaultABRRules': true,
+                        'ABRStrategy': 'abrDynamic'
+                    }
+                }
+            });
+
+            player.addABRCustomRule('qualitySwitchRules', 'LowestBitrateRule', LowestBitrateRule);
+
+            var currentSettings = player.getSettings();
+            console.log(currentSettings);
+
+            player.initialize(document.querySelector("#videoPlayer"), url, true);
+        })();
+            
+    </script>
+</body>
+
+</html>
